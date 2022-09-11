@@ -47,11 +47,10 @@ const LeaderboardScreen = () => {
         <View>
           {leaderboard.map((score, index) => {
             return (
-              <View>
-                <Text style={styles.paragraphText} key={index}>
-                  {index}==={score.user}==={score.score}
+                <Text style={styles.paragraphText} key={score.id}>
+                  {score.id}==={score.user}==={score.score}
                 </Text>
-              </View>
+
             );
           })}
         </View>

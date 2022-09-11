@@ -1,5 +1,5 @@
-import { useState, useEffect, useContext } from 'react';
-import { StatusBar } from 'expo-status-bar';
+import { useState, useEffect, useContext } from "react";
+import { StatusBar } from "expo-status-bar";
 import {
   Text,
   View,
@@ -7,19 +7,19 @@ import {
   ScrollView,
   Alert,
   TouchableOpacity,
-} from 'react-native';
-import Keyboard from './Keyboard';
-import { ENTER, DELETE, colors } from '../../../constants';
-import { words } from './Words';
-import gameStyles from '../styles/gameStyles';
-import Lives from './Lives';
-import Timer from './Timer';
-import { UserContext } from '../../../context/User';
-import { doc, updateDoc, getDoc } from 'firebase/firestore';
-import { db } from '../../../../firebase';
-import { Stage } from './Stage';
-import { useNavigation } from '@react-navigation/core';
-import { useRoute } from '@react-navigation/native';
+} from "react-native";
+import Keyboard from "./Keyboard";
+import { ENTER, DELETE, colors } from "../../../constants";
+import { words } from "./Words";
+import gameStyles from "../styles/gameStyles";
+import Lives from "./Lives";
+import Timer from "./Timer";
+import { UserContext } from "../../../context/User";
+/* import { doc, updateDoc, getDoc } from 'firebase/firestore';
+import { db } from '../../../../firebase'; */
+import { Stage } from "./Stage";
+import { useNavigation } from "@react-navigation/core";
+import { useRoute } from "@react-navigation/native";
 
 const MAX_GUESSES = 6;
 const copyArray = (arr) => {
@@ -29,35 +29,35 @@ const copyArray = (arr) => {
 const Game = () => {
   const route = useRoute();
   const { duration } = route.params;
-  const [word, setWord] = useState('world');
+  const [word, setWord] = useState("world");
 
-  const letters = word.split('');
+  const letters = word.split("");
   const remainingLetters = {};
   const [rows, setRows] = useState(
-    new Array(MAX_GUESSES).fill(new Array(letters.length).fill(''))
+    new Array(MAX_GUESSES).fill(new Array(letters.length).fill(""))
   );
-  const [wrongLetters, setWrongLetters] = useState('');
+  const [wrongLetters, setWrongLetters] = useState("");
   const [currentRow, setCurrentRow] = useState(0);
   const [currentColumn, setCurrentColumn] = useState(0);
-  const [gameState, setGameState] = useState('playing');
+  const [gameState, setGameState] = useState("playing");
   const [lives, setLives] = useState(letters.length * 2);
   const [totalTime, setTotalTime] = useState();
   const [startTime, setStartTime] = useState();
   const { user, setUser } = useContext(UserContext);
 
-  console.log('word:', word);
+  console.log("word:", word);
 
   useEffect(() => {
-    if (word === 'world') {
+    if (word === "world") {
       setWord(words.words[Math.floor(Math.random() * 2314)]);
     }
-    if (gameState === 'timeout') {
+    if (gameState === "timeout") {
       checkGameState();
     }
     if (currentRow > 0) {
       checkGameState();
     }
-    if (gameState === 'allLivesLost') {
+    if (gameState === "allLivesLost") {
       checkGameState();
     }
 
@@ -69,14 +69,14 @@ const Game = () => {
       return [...new Set(arr)];
     };
 
-    setWrongLetters(removeDuplicates(wrongLetters).join(''));
+    setWrongLetters(removeDuplicates(wrongLetters).join(""));
   }, [currentRow, gameState]);
 
   const checkGameState = () => {
-    if (gameState === 'timeout') {
+    if (gameState === "timeout") {
       setTotalTime(getGameTime());
       Alert.alert(
-        'TIME OUT!!',
+        "TIME OUT!!",
         `You died! Shoulda thunk faster! 
         
         The word was ${word.toUpperCase()}
@@ -90,20 +90,20 @@ const Game = () => {
         (0 points)`,
         [
           ({
-            text: 'Go Home',
-            onPress: () => navigation.navigate('Home'),
+            text: "Go Home",
+            onPress: () => navigation.navigate("Home"),
           },
           {
-            text: 'View Leaderboard',
-            onPress: () => navigation.navigate('Leaderboard'),
+            text: "View Leaderboard",
+            onPress: () => navigation.navigate("Leaderboard"),
           }),
         ]
       );
-      setGameState('lost');
-    } else if (gameState === 'allLivesLost') {
+      setGameState("lost");
+    } else if (gameState === "allLivesLost") {
       setTotalTime(getGameTime());
       Alert.alert(
-        'THE HANGMAN GOT YOU!!',
+        "THE HANGMAN GOT YOU!!",
         `Your life force is all gone! Haha! 
         
         The word was ${word.toUpperCase()}
@@ -117,20 +117,20 @@ const Game = () => {
         (0 points)`,
         [
           ({
-            text: 'Go Home',
-            onPress: () => navigation.navigate('Home'),
+            text: "Go Home",
+            onPress: () => navigation.navigate("Home"),
           },
           {
-            text: 'View Leaderboard',
-            onPress: () => navigation.navigate('Leaderboard'),
+            text: "View Leaderboard",
+            onPress: () => navigation.navigate("Leaderboard"),
           }),
         ]
       );
-    } else if (checkIfWon() && gameState !== 'won') {
+    } else if (checkIfWon() && gameState !== "won") {
       setTotalTime(getGameTime());
       getAndPostTotalScore();
       Alert.alert(
-        'WINNAR!!',
+        "WINNAR!!",
         `You live!!! For now...
         
         The word was ${word.toUpperCase()}
@@ -142,21 +142,21 @@ const Game = () => {
         Total score: ${getTotalScore()}`,
         [
           ({
-            text: 'Go Home',
-            onPress: () => navigation.navigate('Home'),
+            text: "Go Home",
+            onPress: () => navigation.navigate("Home"),
           },
           {
-            text: 'View Leaderboard',
-            onPress: () => navigation.navigate('Leaderboard'),
+            text: "View Leaderboard",
+            onPress: () => navigation.navigate("Leaderboard"),
           }),
         ]
       );
-      setGameState('won');
-    } else if (checkIfLost() && gameState !== 'lost') {
+      setGameState("won");
+    } else if (checkIfLost() && gameState !== "lost") {
       setTotalTime(getGameTime());
       getAndPostTotalScore();
       Alert.alert(
-        'YOU DIED!!',
+        "YOU DIED!!",
         `You ran out of guesses! 
         
         The word was ${word.toUpperCase()}
@@ -170,47 +170,44 @@ const Game = () => {
         (0 points)`,
         [
           ({
-            text: 'Go Home',
-            onPress: () => navigation.navigate('Home'),
+            text: "Go Home",
+            onPress: () => navigation.navigate("Home"),
           },
           {
-            text: 'View Leaderboard',
-            onPress: () => navigation.navigate('Leaderboard'),
+            text: "View Leaderboard",
+            onPress: () => navigation.navigate("Leaderboard"),
           }),
         ]
       );
-      setGameState('lost');
+      setGameState("lost");
     }
   };
-
+  /* ================================================================= */
   const getAndPostTotalScore = async () => {
-    const gameNumber = user.scores.games[1]
-      ? Object.keys(user.scores.games).length + 1
-      : 1;
-    const gameData = user.scores;
-
-    const data = {
-      timerScore: getTimerScore(),
-      guessScore: getGuessScore(),
-      livesScore: getLivesScore(),
-      totalScore: getTotalScore(),
-      word,
-    };
-
-    try {
-      gameData.games[gameNumber] = data;
-      gameData.total += getTotalScore();
-      const scoresRef = doc(db, 'users', user.id);
-      await updateDoc(scoresRef, { scores: gameData });
-
-      const userRef = doc(db, 'users', user.id);
-      const userSnap = await getDoc(userRef);
-      setUser(userSnap.data());
-    } catch (err) {
-      alert(err);
-    }
+    // const gameNumber = user.scores.games[1]
+    //   ? Object.keys(user.scores.games).length + 1
+    //   : 1;
+    // const gameData = user.scores;
+    // const data = {
+    //   timerScore: getTimerScore(),
+    //   guessScore: getGuessScore(),
+    //   livesScore: getLivesScore(),
+    //   totalScore: getTotalScore(),
+    //   word,
+    // };
+    // try {
+    //   gameData.games[gameNumber] = data;
+    //   gameData.total += getTotalScore();
+    //   const scoresRef = doc(db, 'users', user.id);
+    //   await updateDoc(scoresRef, { scores: gameData });
+    //   const userRef = doc(db, 'users', user.id);
+    //   const userSnap = await getDoc(userRef);
+    //   setUser(userSnap.data());
+    // } catch (err) {
+    //   alert(err);
+    // }
   };
-
+  /* ================================================================= */
   const getTimerScore = () => {
     if (duration === 120) {
       if (getGameTime() <= duration * 0.2) {
@@ -272,15 +269,15 @@ const Game = () => {
   };
 
   const handleKeyPress = (key) => {
-    if (gameState !== 'playing') {
+    if (gameState !== "playing") {
       return;
     }
 
     const updatedRows = copyArray(rows);
 
     if (key === ENTER) {
-      if (!words.valid.includes(rows[currentRow].join('').toLowerCase())) {
-        Alert.alert('Are you making things up? 💀');
+      if (!words.valid.includes(rows[currentRow].join("").toLowerCase())) {
+        Alert.alert("Are you making things up? 💀");
       } else if (currentColumn === rows[0].length) {
         setCurrentRow(currentRow + 1);
         setCurrentColumn(0);
@@ -291,7 +288,7 @@ const Game = () => {
     if (key === DELETE) {
       const prevColumn = currentColumn - 1;
       if (prevColumn >= 0) {
-        updatedRows[currentRow][prevColumn] = '';
+        updatedRows[currentRow][prevColumn] = "";
         setRows(updatedRows);
         setCurrentColumn(prevColumn);
       }
@@ -341,7 +338,7 @@ const Game = () => {
       return colors.primary;
     }
 
-    console.log('reamainingLetters:', remainingLetters[row]);
+    console.log("reamainingLetters:", remainingLetters[row]);
     if (
       letters.includes(letter) &&
       remainingLetters[row].includes(letter) &&
@@ -364,12 +361,12 @@ const Game = () => {
   const greyKeys = getAllLettersWithColor(colors.darkgrey);
   const navigation = useNavigation();
 
-  if (gameState !== 'playing') {
+  if (gameState !== "playing") {
     return (
       <View>
         <TouchableOpacity
           style={gameStyles.homeButton}
-          onPress={() => navigation.navigate('Home')}
+          onPress={() => navigation.navigate("Home")}
         >
           <Text style={gameStyles.homeButtonTitle}>Go Home</Text>
         </TouchableOpacity>
@@ -379,7 +376,7 @@ const Game = () => {
 
   return (
     <SafeAreaView style={gameStyles.container}>
-      <StatusBar style='light' />
+      <StatusBar style="light" />
 
       <Stage wrongLetters={wrongLetters} />
       <Lives

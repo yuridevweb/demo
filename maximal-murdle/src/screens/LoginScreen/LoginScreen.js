@@ -64,9 +64,15 @@ const LoginScreen = ({ navigation }) => {
         <View style={styles.footerView}>
           <Text style={styles.footerText}>
             Don't have an account?{" "}
-            {/*           <Text onPress={handleRegister} style={styles.footerLink}>
-              Sign up
-            </Text> */}
+            {/* <Text onPress={handleRegister} style={styles.footerLink}> */}
+            {
+              <Text
+                onPress={() => navigation.navigate("Registration")}
+                style={styles.footerLink}
+              >
+                Sign up
+              </Text>
+            }
           </Text>
         </View>
       </KeyboardAvoidingView>

@@ -28,6 +28,23 @@ export const AuthProvider = ({ children }) => {
     setIsLoading(false);
   };
 
+  const registerUser = (username, password, email) => {
+    setIsLoading(true);
+    axios
+      .post(`http://127.0.0.1:8000/api/register/`, {
+        username,
+        email,
+        password,
+      })
+      .then((res) => {
+        console.log(res.data);
+      })
+      .catch((e) => {
+        console.log("login error", e);
+      });
+    setIsLoading(false);
+  };
+
   const logout = () => {
     setUserToken(null);
     setIsLoading(false);
@@ -40,6 +57,7 @@ export const AuthProvider = ({ children }) => {
     login: login,
     logout: logout,
     isLoading: isLoading,
+    registerUser: registerUser,
   };
   return (
     <AuthContext.Provider value={contextData}>{children}</AuthContext.Provider>

@@ -37,3 +37,11 @@ class LeaderboardSerializer(ModelSerializer):
     class Meta:
         model = Leaderboard
         fields = '__all__'
+
+    def create(self, validated_data):
+        author = User.objects.get(username=validated_data["user"])
+        validated_data["user"] = author
+        """
+            Create and return a new `leaderboard` instance, given the validated data.
+            """
+        return Leaderboard.objects.create(**validated_data)

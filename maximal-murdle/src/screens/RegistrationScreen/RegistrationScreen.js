@@ -1,5 +1,5 @@
 import { useNavigation } from "@react-navigation/core";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import {
   KeyboardAvoidingView,
   Image,
@@ -8,10 +8,11 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import {
+import { AuthContext } from "../../context/AuthContext";
+/* import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
-} from "firebase/auth";
+} from "firebase/auth"; */
 /* import { auth, db } from '../../../firebase';
 import { collection, doc, setDoc } from 'firebase/firestore'; */
 import styles from "./styles";
@@ -21,6 +22,8 @@ const RegistrationScreen = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+
+  let { registerUser } = useContext(AuthContext);
 
   const navigation = useNavigation();
 
@@ -58,15 +61,13 @@ const RegistrationScreen = () => {
     }
 
     try {
-      const userCredentials = await createUserWithEmailAndPassword(
-        auth,
-        email,
-        password
-      );
-      const user = userCredentials.user;
-      console.log("Registered with:", user.email, user.uid);
+      const userCredentials = await registerUser(fullName, password, email);
+      navigation.navigate("Login");
+      alert("Account successfully created. Please login.");
+/*       const user = userCredentials.user;
+      console.log("Registered with:", user.email, user.uid); */
 
-      const data = {
+     /*  const data = {
         id: user.uid,
         fullName,
         email,
@@ -79,7 +80,7 @@ const RegistrationScreen = () => {
 
       const userRef = collection(db, "users");
 
-      await setDoc(doc(userRef, user.uid), data);
+      await setDoc(doc(userRef, user.uid), data); */
     } catch (err) {
       alert(err);
     }

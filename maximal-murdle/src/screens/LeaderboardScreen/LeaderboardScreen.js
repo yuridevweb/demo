@@ -1,84 +1,61 @@
-import { Text, View, KeyboardAvoidingView, Image } from 'react-native';
-import styles from './styles';
+import React from "react";
+import { useEffect, useState } from "react";
 import {
-  query,
-  orderBy,
-  limit,
-  collection,
-  queryEqual,
-  where,
-  getDocs,
-} from 'firebase/firestore';
-import { db } from '../../../firebase';
-import React from 'react';
-import Leaderboard from './Leaderboard';
-import {
-  pinkSkull,
-  redSkull,
-  greenSkull,
-  yellowSkull,
-  blueSkull,
-} from '../../../assets/ImageData/skulls';
+  Text,
+  View,
+  KeyboardAvoidingView,
+  Image,
+  ScrollView,
+} from "react-native";
+import styles from "./styles";
 
 const LeaderboardScreen = () => {
-  const [isLoading, setIsLoading] = React.useState(true);
-  const [leaderboardArr, setLeaderboardArr] = React.useState();
+  const [leaderboard, setLeaderboard] = useState([]);
 
-  React.useEffect(() => {
-    const getLeaderboardArr = async () => {
-      const leaderboardArr = [];
+  useEffect(() => {
+    getLeaderboard();
+  }, []);
 
-      const usersRef = collection(db, 'users');
-      const q = query(usersRef, orderBy('scores.total', 'desc'), limit(20));
+  const getLeaderboard = async () => {
+    let response = await fetch("http://127.0.0.1:8000/api/leaderboard/", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        //  Authorization: "Bearer " + String(authTokens.access),
+      },
+    });
+    let data = await response.json();
 
-      const querySnapshot = await getDocs(q);
-
-      querySnapshot.forEach((doc) => {
-        doc.data();
-        leaderboardArr.push(doc.data());
-      });
-
-      setLeaderboardArr(leaderboardArr);
-    };
-    if (!leaderboardArr) getLeaderboardArr();
-
-    if (leaderboardArr) {
-      leaderboardArr.forEach((user) => {
-        const options = [
-          pinkSkull,
-          redSkull,
-          greenSkull,
-          yellowSkull,
-          blueSkull,
-        ];
-        const path = options[Math.floor(Math.random() * options.length)];
-
-        user.icon = path;
-      });
-      setIsLoading(false);
+    if (response.status === 200) {
+      console.log(data, "<<<data");
+      setLeaderboard(data);
+    } else if (response.statusText === "Unauthorized") {
+      //  logoutUser();
     }
-  }, [leaderboardArr]);
-
-  if (isLoading) {
-    return (
-      <View>
-        <Text>Loading...</Text>
-      </View>
-    );
-  }
-
+  };
+  console.log(leaderboard, "leaderboard");
   return (
     <View style={styles.container}>
-      <KeyboardAvoidingView style={{ flex: 1, width: '100%' }}>
-
+      <KeyboardAvoidingView style={{ flex: 1, width: "100%" }}>
         <Image
           style={styles.logo}
-          source={require('../../../assets/murdle-logo.png')}
+          source={require("../../../assets/murdle-logo.png")}
         />
-
-        {/* <Text style={styles.paragraphText}>Text</Text> */}
-        <Leaderboard leaderboardArr={leaderboardArr} />
+        <Text style={styles.headerText}>Leaderboard</Text>
       </KeyboardAvoidingView>
+      <ScrollView>
+        <View>
+          {leaderboard.map((score, index) => {
+            return (
+              <View>
+                <Text style={styles.paragraphText} key={index}>
+                  {index}==={score.user}==={score.score}
+                </Text>
+              </View>
+            );
+          })}
+        </View>
+      </ScrollView>
     </View>
   );
 };

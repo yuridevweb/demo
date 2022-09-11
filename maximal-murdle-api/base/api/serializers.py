@@ -1,5 +1,5 @@
 from rest_framework.serializers import ModelSerializer
-from base.models import Note
+from base.models import Leaderboard
 
 from rest_framework import serializers
 from django.contrib.auth.models import User
@@ -31,7 +31,9 @@ class RegistrationSerializer(serializers.ModelSerializer):
         return User.objects.create_user(**validated_data)
 
 
-class NoteSerializer(ModelSerializer):
+class LeaderboardSerializer(ModelSerializer):
+    user = serializers.CharField()
+
     class Meta:
-        model = Note
+        model = Leaderboard
         fields = '__all__'

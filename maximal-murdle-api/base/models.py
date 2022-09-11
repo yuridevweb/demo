@@ -4,6 +4,10 @@ from django.contrib.auth.models import User
 # Create your models here.
 
 
-class Note(models.Model):
+class Leaderboard(models.Model):
+    id = models.AutoField(primary_key=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
-    body = models.TextField()
+    score = models.IntegerField(default='0')
+
+    def __str__(self):
+        return self.user.username

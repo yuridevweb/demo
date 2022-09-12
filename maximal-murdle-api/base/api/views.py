@@ -15,6 +15,8 @@ from rest_framework import serializers
 from rest_framework import status
 import uuid
 
+from rest_framework import mixins
+
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     @classmethod
@@ -44,15 +46,21 @@ def getRoutes(request):
     return Response(routes)
 
 
-@api_view(['GET'])
-# @permission_classes([IsAuthenticated])
-def getLeaderboard(request):
-    leaderboard = Leaderboard.objects.all()
-    for item in leaderboard:
-        print(item, item.score)
-    serializer = LeaderboardSerializer(leaderboard, many=True)
-    print(leaderboard, "<<<")
-    return Response(serializer.data)
+# @api_view(['GET'])
+# # @permission_classes([IsAuthenticated])
+# def getLeaderboard(request):
+#     leaderboard = Leaderboard.objects.all()
+#     for item in leaderboard:
+#         print(item, item.score)
+#     serializer = LeaderboardSerializer(leaderboard, many=True)
+#     print(leaderboard, "<<<")
+#     return Response(serializer.data)
+
+
+class LeaderboardList(generics.ListCreateAPIView):
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    queryset = Leaderboard.objects.all()
+    serializer_class = LeaderboardSerializer
 
 
 class RegistrationAPIView(generics.GenericAPIView):

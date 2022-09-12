@@ -9,8 +9,9 @@ from .views import RegistrationAPIView
 
 urlpatterns = [
     path('', views.getRoutes),
-    path('leaderboard/', views.getLeaderboard),
-    
+    #path('leaderboard/', views.getLeaderboard),
+    path('leaderboard/', views.LeaderboardList.as_view()),
+
     path('token/', MyTokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 

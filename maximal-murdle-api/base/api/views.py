@@ -58,6 +58,7 @@ def getRoutes(request):
 
 
 class LeaderboardList(generics.ListCreateAPIView):
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
     queryset = Leaderboard.objects.all()
     serializer_class = LeaderboardSerializer
 

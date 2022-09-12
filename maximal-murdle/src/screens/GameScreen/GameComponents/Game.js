@@ -21,6 +21,10 @@ import { Stage } from "./Stage";
 import { useNavigation } from "@react-navigation/core";
 import { useRoute } from "@react-navigation/native";
 
+import axios from "axios";
+import { AuthContext } from "../../../context/AuthContext";
+import jwt_decode from "jwt-decode";
+
 const MAX_GUESSES = 6;
 const copyArray = (arr) => {
   return [...arr.map((rows) => [...rows])];
@@ -43,7 +47,10 @@ const Game = () => {
   const [lives, setLives] = useState(letters.length * 2);
   const [totalTime, setTotalTime] = useState();
   const [startTime, setStartTime] = useState();
-  const { user, setUser } = useContext(UserContext);
+  // const { user, setUser } = useContext(UserContext);
+  let { userToken, user } = useContext(AuthContext);
+  let userData = jwt_decode(user.access);
+  console.log("userToken>>>", userToken);
 
   console.log("word:", word);
 
@@ -128,6 +135,7 @@ const Game = () => {
       );
     } else if (checkIfWon() && gameState !== "won") {
       setTotalTime(getGameTime());
+
       getAndPostTotalScore();
       Alert.alert(
         "WINNAR!!",
@@ -184,6 +192,26 @@ const Game = () => {
   };
   /* ================================================================= */
   const getAndPostTotalScore = async () => {
+    axios
+      .post(
+        `http://127.0.0.1:8000/api/leaderboard/`,
+        {
+          user: userData.username,
+          score: getTotalScore(),
+        },
+        {
+          headers: {
+            Authorization: "Bearer " + String(userToken.access),
+          },
+        }
+      )
+      .then((res) => {
+        console.log(res.data, "<<<<daaaata");
+      })
+      .catch((e) => {
+        console.log("login error", e);
+      });
+
     // const gameNumber = user.scores.games[1]
     //   ? Object.keys(user.scores.games).length + 1
     //   : 1;

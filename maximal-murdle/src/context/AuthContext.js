@@ -8,6 +8,7 @@ export const AuthProvider = ({ children }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [userToken, setUserToken] = useState(null);
   const [user, setUser] = useState(null);
+  //const [username, setUsername] = useState(null);
 
   const login = (username, password) => {
     setIsLoading(true);
@@ -17,7 +18,6 @@ export const AuthProvider = ({ children }) => {
         password,
       })
       .then((res) => {
-        console.log(res.data);
         setUser(res.data);
         setUserToken(res.data);
         console.log('user>>>', jwt_decode(res.data.access));
@@ -52,7 +52,7 @@ export const AuthProvider = ({ children }) => {
 
   let contextData = {
     // test: "test123",
-    // user: user,
+    user: user,
     userToken: userToken,
     login: login,
     logout: logout,

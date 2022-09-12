@@ -16,6 +16,7 @@ from rest_framework import status
 import uuid
 
 from rest_framework import mixins
+from base.api.permisssions import IsOwnerOrReadOnly
 
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
@@ -58,9 +59,13 @@ def getRoutes(request):
 
 
 class LeaderboardList(generics.ListCreateAPIView):
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    permission_classes = [
+        permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly]
     queryset = Leaderboard.objects.all()
     serializer_class = LeaderboardSerializer
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
 
 
 class RegistrationAPIView(generics.GenericAPIView):

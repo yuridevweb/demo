@@ -18,7 +18,6 @@ export const AuthProvider = ({ children }) => {
         password,
       })
       .then((res) => {
-        //console.log(jwt_decode(res.data.access.username));
         setUser(res.data);
         setUserToken(res.data);
         console.log('user>>>', jwt_decode(res.data.access));

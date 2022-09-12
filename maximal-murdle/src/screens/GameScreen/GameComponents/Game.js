@@ -206,7 +206,7 @@ const Game = () => {
         }
       )
       .then((res) => {
-        console.log(res.data,"<<<<daaaata");
+        console.log(res.data, "<<<<daaaata");
       })
       .catch((e) => {
         console.log("login error", e);

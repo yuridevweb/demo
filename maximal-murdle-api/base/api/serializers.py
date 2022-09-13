@@ -39,9 +39,15 @@ class LeaderboardSerializer(ModelSerializer):
         fields = '__all__'
 
     def create(self, validated_data):
+        """ Update user old score rather than make new one """
         author = User.objects.get(username=validated_data["user"])
         validated_data["user"] = author
+        leaderboard = Leaderboard.objects.all()
+        for item in leaderboard:
+            if item.user == author:
+                validated_data["score"] += item.score
+                item.delete()                
         """
-            Create and return a new `leaderboard` instance, given the validated data.
-            """
+        Create and return a new `leaderboard` instance, given the validated data.
+        """
         return Leaderboard.objects.create(**validated_data)

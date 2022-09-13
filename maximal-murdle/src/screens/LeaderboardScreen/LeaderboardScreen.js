@@ -8,6 +8,7 @@ import {
   ScrollView,
 } from "react-native";
 import styles from "./styles";
+import { DataTable } from "react-native-paper";
 
 const LeaderboardScreen = () => {
   const [leaderboard, setLeaderboard] = useState([]);
@@ -41,18 +42,31 @@ const LeaderboardScreen = () => {
           style={styles.logo}
           source={require("../../../assets/murdle-logo.png")}
         />
-        <Text style={styles.headerText}>Leaderboard</Text>
       </KeyboardAvoidingView>
       <ScrollView>
         <View>
-          {leaderboard.map((score, index) => {
-            return (
-                <Text style={styles.paragraphText} key={score.id}>
-                  {score.id}==={score.user}==={score.score}
-                </Text>
+          <DataTable>
+            <DataTable.Header style={styles.paragraphText}>
+              <DataTable.Title>USERNAME</DataTable.Title>
+              <DataTable.Title>TOTAL SCORE</DataTable.Title>
+            </DataTable.Header>
+            {leaderboard.map((score) => {
+              return (
+                <DataTable.Row style={styles.row} key={score.id}>
+                  <DataTable.Cell>
+                    <Text style={styles.usernameCell}> {score.user}</Text>
+                  </DataTable.Cell>
+                  <DataTable.Cell>
+                    <Text style={styles.scoreCell}> {score.score}</Text>
+                  </DataTable.Cell>
+                </DataTable.Row>
 
-            );
-          })}
+                /*                 <Text style={styles.paragraphText} key={score.id}>
+                  {score.id}==={score.user}==={score.score}
+                </Text> */
+              );
+            })}
+          </DataTable>
         </View>
       </ScrollView>
     </View>

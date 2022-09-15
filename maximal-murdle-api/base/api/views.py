@@ -18,6 +18,8 @@ import uuid
 from rest_framework import mixins
 from base.api.permisssions import IsOwnerOrReadOnly
 
+# import django_filters.rest_framework
+
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     @classmethod
@@ -61,8 +63,11 @@ def getRoutes(request):
 class LeaderboardList(generics.ListCreateAPIView):
     permission_classes = [
         permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly]
-    queryset = Leaderboard.objects.all()
     serializer_class = LeaderboardSerializer
+
+    def get_queryset(self):
+        queryset = Leaderboard.objects.all()
+        return queryset.order_by('-score')[:30]
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
@@ -84,4 +89,4 @@ class RegistrationAPIView(generics.GenericAPIView):
             )
 
         # return Response({"Errors": serializers.errors}, status=status.HTTP_400_BAD_REQUEST)
-        return Response({"Errors": 'Username is minimum 6 characters long \n Email must be unique'}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({"Errors": 'Username is minimum 6 characters long. Email must be unique'}, status=status.HTTP_400_BAD_REQUEST)

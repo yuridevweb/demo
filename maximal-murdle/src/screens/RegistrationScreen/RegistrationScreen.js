@@ -37,7 +37,12 @@ const RegistrationScreen = () => {
       if (namePart === "") return "space";
       return /^[a-z ,.'-]+$/i.test(namePart);
     });
-
+    //
+    if (fullName.length > 20) {
+      alert(" Your username: Must be between 3 and 20 characters long");
+      return;
+    }
+    //
     if (correctNameArr.includes("space")) {
       alert("Too many spaces between names");
       return;
@@ -64,10 +69,10 @@ const RegistrationScreen = () => {
       const userCredentials = await registerUser(fullName, password, email);
       navigation.navigate("Login");
       alert("Account successfully created. Please login.");
-/*       const user = userCredentials.user;
+      /*       const user = userCredentials.user;
       console.log("Registered with:", user.email, user.uid); */
 
-     /*  const data = {
+      /*  const data = {
         id: user.uid,
         fullName,
         email,

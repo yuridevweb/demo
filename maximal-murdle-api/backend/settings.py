@@ -32,7 +32,7 @@ SECRET_KEY = os.environ['SECRET_KEY']  # Instead of your actual secret key
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['167.172.61.6',
                  'www.murdle-api.yuridevweb.co.uk', 'murdle-api.yuridevweb.co.uk']
@@ -131,28 +131,38 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
-if DEBUG:
-    """ Development DB settings """
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': BASE_DIR / 'db.sqlite3',
-        }
-    }
-else:
-    """ Production DB settings """
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql_psycopg2',
-            'NAME': 'murdle_api',
-            'USER': 'murdle_admin',
-            'PASSWORD': 'murdle',
-            'HOST': 'localhost',
-            'PORT': '',
-        }
+# if DEBUG:
+#     """ Development DB settings """
+#     DATABASES = {
+#         'default': {
+#             'ENGINE': 'django.db.backends.sqlite3',
+#             'NAME': BASE_DIR / 'db.sqlite3',
+#         }
+#     }
+# else:
+#     """ Production DB settings """
+#     DATABASES = {
+#         'default': {
+#             'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#             'NAME': 'murdle_api',
+#             'USER': 'murdle_admin',
+#             'PASSWORD': 'murdle',
+#             'HOST': 'localhost',
+#             'PORT': '',
+#         }
 
-    }
+#     }
 
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'murdle_api',
+        'USER': 'murdle_admin',
+        'PASSWORD': 'murdle',
+        'HOST': 'localhost',
+        'PORT': '',
+    }
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators

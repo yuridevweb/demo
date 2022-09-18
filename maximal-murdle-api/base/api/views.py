@@ -1,8 +1,6 @@
-from django.http import JsonResponse
 from rest_framework import permissions
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
-from rest_framework.permissions import IsAuthenticated
 
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
@@ -14,11 +12,7 @@ from .serializers import RegistrationSerializer, LeaderboardSerializer
 from rest_framework import serializers
 from rest_framework import status
 import uuid
-
-from rest_framework import mixins
 from base.api.permisssions import IsOwnerOrReadOnly
-
-# import django_filters.rest_framework
 
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
@@ -28,7 +22,6 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
 
         # Add custom claims
         token['username'] = user.username
-        # ...
 
         return token
 
@@ -48,17 +41,6 @@ def getRoutes(request):
     ]
 
     return Response(routes)
-
-
-# @api_view(['GET'])
-# # @permission_classes([IsAuthenticated])
-# def getLeaderboard(request):
-#     leaderboard = Leaderboard.objects.all()
-#     for item in leaderboard:
-#         print(item, item.score)
-#     serializer = LeaderboardSerializer(leaderboard, many=True)
-#     print(leaderboard, "<<<")
-#     return Response(serializer.data)
 
 
 class LeaderboardList(generics.ListCreateAPIView):

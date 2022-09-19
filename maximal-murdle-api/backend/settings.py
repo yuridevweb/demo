@@ -16,6 +16,9 @@ from datetime import timedelta
 import os
 import dotenv
 
+import django_heroku
+
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -34,8 +37,7 @@ SECRET_KEY = os.environ['SECRET_KEY']  # Instead of your actual secret key
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['167.172.61.6', 'yuridevweb.co.uk:8000',
-                 'www.murdle-api.yuridevweb.co.uk', 'murdle-api.yuridevweb.co.uk']
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -96,6 +98,7 @@ SIMPLE_JWT = {
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     'django.contrib.sessions.middleware.SessionMiddleware',
 
     "corsheaders.middleware.CorsMiddleware",
@@ -131,6 +134,13 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
+
+DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
 # if DEBUG:
 #     """ Development DB settings """
 #     DATABASES = {
@@ -153,16 +163,16 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 
 #     }
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'murdle_api',
-        'USER': 'murdle_admin',
-        'PASSWORD': 'murdle',
-        'HOST': 'localhost',
-        'PORT': '',
-    }
-}
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'NAME': 'murdle_api',
+#         'USER': 'murdle_admin',
+#         'PASSWORD': 'murdle',
+#         'HOST': 'localhost',
+#         'PORT': '',
+#     }
+# }
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
@@ -208,3 +218,5 @@ STATIC_URL = '/static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CORS_ALLOW_ALL_ORIGINS = True
+
+django_heroku.settings(locals())

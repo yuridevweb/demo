@@ -13,17 +13,17 @@ export const AuthProvider = ({ children }) => {
   const login = (username, password) => {
     setIsLoading(true);
     axios
-      .post(`http://127.0.0.1:8000/api/token/`, {
+      .post(`https://murdle-api.yuridevweb.co.uk/api/token/`, {
         username,
         password,
       })
       .then((res) => {
         setUser(res.data);
         setUserToken(res.data);
-        console.log('user>>>', jwt_decode(res.data.access));
+        console.log("user>>>", jwt_decode(res.data.access));
       })
       .catch((e) => {
-        console.log('login error', e);
+        console.log("login error", e);
       });
     setIsLoading(false);
   };
@@ -31,7 +31,7 @@ export const AuthProvider = ({ children }) => {
   const registerUser = (username, password, email) => {
     setIsLoading(true);
     axios
-      .post(`http://127.0.0.1:8000/api/register/`, {
+      .post(`https://murdle-api.yuridevweb.co.uk/api/register/`, {
         username,
         email,
         password,

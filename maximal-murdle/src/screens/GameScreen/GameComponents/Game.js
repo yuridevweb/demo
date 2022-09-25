@@ -194,7 +194,7 @@ const Game = () => {
   const getAndPostTotalScore = async () => {
     axios
       .post(
-        `http://127.0.0.1:8000/api/leaderboard/`,
+        `https://murdle-api.yuridevweb.co.uk/api/leaderboard/`,
         {
           user: userData.username,
           score: getTotalScore(),

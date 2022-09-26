@@ -43,21 +43,6 @@ export default StyleSheet.create({
     marginLeft: 90,
   },
   paragraphText: {
-    /*     textAlign: "centre",
-    flexDirection: "row",
-    flex: 1,
-    padding: 20,
-    marginVertical: 4,
-    marginHorizontal: 16,
-    borderRadius: 2,
-    backgroundColor: "#3A3A3D",
-    color: "white", */
-    /*     backgroundColor: "#3A3A3D",
-    marginLeft: 20,
-    marginRight: 20,
-    fontSize: 18,
-    color: 'white',
-    alignSelf: 'center',  */
   },
   murderText: {
     color: "#bb0a1e",

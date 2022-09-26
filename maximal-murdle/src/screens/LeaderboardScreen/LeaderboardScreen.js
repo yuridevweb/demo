@@ -24,7 +24,6 @@ const LeaderboardScreen = () => {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          //  Authorization: "Bearer " + String(authTokens.access),
         },
       }
     );
@@ -33,8 +32,6 @@ const LeaderboardScreen = () => {
     if (response.status === 200) {
       console.log(data, "<<<data");
       setLeaderboard(data);
-    } else if (response.statusText === "Unauthorized") {
-      //  logoutUser();
     }
   };
   console.log(leaderboard, "leaderboard");
@@ -63,10 +60,6 @@ const LeaderboardScreen = () => {
                     <Text style={styles.scoreCell}> {score.score}</Text>
                   </DataTable.Cell>
                 </DataTable.Row>
-
-                /*                 <Text style={styles.paragraphText} key={score.id}>
-                  {score.id}==={score.user}==={score.score}
-                </Text> */
               );
             })}
           </DataTable>

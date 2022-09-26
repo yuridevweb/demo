@@ -34,9 +34,9 @@ SECRET_KEY = os.environ['SECRET_KEY']  # Instead of your actual secret key
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = ["https://murdle-api.yuridevweb.co.uk/", "167.172.61.6"]
 
 
 # Application definition
@@ -140,30 +140,6 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 #             'NAME': BASE_DIR / 'db.sqlite3',
 #         }
 #     }
-
-
-# if DEBUG:
-#     """ Development DB settings """
-#     DATABASES = {
-#         'default': {
-#             'ENGINE': 'django.db.backends.sqlite3',
-#             'NAME': BASE_DIR / 'db.sqlite3',
-#         }
-#     }
-# else:
-#     """ Production DB settings """
-#     DATABASES = {
-#         'default': {
-#             'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#             'NAME': 'murdle_api',
-#             'USER': 'murdle_admin',
-#             'PASSWORD': 'murdle',
-#             'HOST': 'localhost',
-#             'PORT': '',
-#         }
-
-#     }
-
 
 # Production DB
 DATABASES = {
